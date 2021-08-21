@@ -27,7 +27,7 @@ class newtonian_physics_model:
 		[1,	0.5],
 		[0.5,	0]]
 
-	def Update_Kinematics(self, Radial_Object, force=[0, 0], time_step=1 / 60, values={}):
+	def Update_Kinematics(self, Radial_Object, force=[0, 0], time_step=1 / 60, values={}):#Moves the system one time_step amount of time ahead
 
 		acceleration = []
 		for i in force:
@@ -36,7 +36,7 @@ class newtonian_physics_model:
 			Radial_Object.velocity[i] += acceleration[i] * time_step
 			Radial_Object.position[i] += Radial_Object.velocity[i] * time_step
 
-	def Get_Gravity(self):
+	def Get_Gravity(self):#Gives equation of gravity for the desried dimensions using the hypothetical systemm of gravitons
 		def den(values):
 			target_coordinate = [values["0.2." + str(i)] for i in range(self.dimensions)]
 			source_coordinate = [values["1.2." + str(i)] for i in range(self.dimensions)]
@@ -49,7 +49,7 @@ class newtonian_physics_model:
 					values["1.2." + str(i)] - values["0.2." + str(i)]) / (den(values) ** (self.dimensions / 2))) for i
 				in range(self.dimensions)]
 
-	def Get_Electrostatic_Force(self):
+	def Get_Electrostatic_Force(self):#Gives equation of gravity for the desired dimensions
 		def den(values):
 			target_coordinate = [vaules["0.2." + str(i)] for i in range(self.dimensions)]
 			source_coordinate = [vaules["1.2." + str(i)] for i in range(self.dimensions)]
@@ -62,7 +62,7 @@ class newtonian_physics_model:
 					values["0.2." + str(i)] - values["1.2." + str(i)]) / (den(values) ** (self.dimensions / 2))) for i
 				in range(self.dimensions)]
 
-	def Equate_Electrostatic_Potential(self, obj1, obj2):
+	def Equate_Electrostatic_Potential(self, obj1, obj2):#Used to transfer charge between conductive bodies
 		if (obj1.conductivity and obj2.conductivity):
 			Charge_Transferred = 0
 			if (self.dimensions == 2):
@@ -77,7 +77,7 @@ class newtonian_physics_model:
 			obj1.charge -= Charge_Transferred
 			obj2.charge += Charge + Transferred
 
-	def Surface_Collision(self, Radial_Object_List, Surface_List, time_step=1 / 60):
+	def Surface_Collision(self, Radial_Object_List, Surface_List, time_step=1 / 60):#Account for radial object  collision with surfaces
 		for i in Surface_List:
 			Magnitude_of_Coeff = m2.Magnitude(i.coefficients)
 			Unit_Vector_Along_Normal = [j / Magnitude_of_Coeff for j in i.coefficients]
@@ -114,13 +114,15 @@ class newtonian_physics_model:
 							j.position = [j.position[k] - Velocity_Along_Normal[k] * time_step for k in range(len(j.velocity))]
 							j.velocity = [Velocity_Along_Surface[k] - self.Elasticity[i.material][j.material]*Velocity_Along_Normal[k] for k in range(len(j.velocity))]
 	
-	def Radial_Object_Collision(self, Radial_Object_List,time_step=1/60):
+	def Radial_Object_Collision(self, Radial_Object_List,time_step=1/60):#Account for collision between radial objects
 		player_hit=False
+		object_collision=False
 		for i in range(len(Radial_Object_List)):
 			for j in range(i+1,len(Radial_Object_List)):
 				if(m2.dist(Radial_Object_List[i].position,Radial_Object_List[j].position)<Radial_Object_List[i].radius+Radial_Object_List[j].radius):
 					if(i==0):
 						player_hit=True
+					object_collision=True
 					
 					Normal=[Radial_Object_List[j].position[k]-Radial_Object_List[i].position[k] for k in range(len(Radial_Object_List[0].position))]
 					Magnitude_of_Coeff=m2.Magnitude(Normal)
@@ -147,4 +149,4 @@ class newtonian_physics_model:
 					Radial_Object_List[j].velocity=[Vjp[k]+Vjn1[k]+Vj1r[k] for k in range(len(Vj1r))]
 					Radial_Object_List[i].position = [Radial_Object_List[i].position[k] + Radial_Object_List[i].velocity[k] * time_step for k in range(len(Radial_Object_List[i].velocity))]
 					Radial_Object_List[j].position = [Radial_Object_List[j].position[k] + Radial_Object_List[j].velocity[k] * time_step for k in range(len(Radial_Object_List[j].velocity))]
-		return player_hit
+		return (player_hit,object_collision)

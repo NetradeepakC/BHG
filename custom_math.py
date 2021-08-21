@@ -28,7 +28,7 @@ class equation:
 		self.value = value
 
 
-def solve_equations(equations):
+def solve_equations(equations):#Recursively solve points to get an equation for the surface created
 	if equations[0].coefficients[0] == 0:
 		if len(equations) == 1:
 			return [equations[0].value]
@@ -54,7 +54,7 @@ def solve_equations(equations):
 			return [a0]+variables
 
 
-def normal_from_surface(point, surface):
+def normal_from_surface(point, surface):#Get equation of the normal of a surface
 	den = 0
 	for i in range(len(point)):
 		den += surface.coefficients[i]*surface.coefficients[i]
@@ -65,7 +65,7 @@ def normal_from_surface(point, surface):
 	return abs(num/den)
 
 
-def Cos(A, B):
+def Cos(A, B):#Cosine of angle between two vectors
 	num = 0
 	for i in range(len(A)):
 		num += A[i]*B[i]
@@ -80,26 +80,26 @@ def Cos(A, B):
 	return (num/den1)/den2
 
 
-def Magnitude(A):
+def Magnitude(A):#Magnitude of a vector
 	mag = 0
 	for i in A:
 		mag += i*i
 	mag = math.sqrt(mag)
 	return mag
 
-def dist(PointA,PointB):
+def dist(PointA,PointB):#Calculate distance between points
 	dist=0
 	for i in range(len(PointA)):
 		dist+=(PointA[i]-PointB[i])*(PointA[i]-PointB[i])
 	return math.sqrt(dist)
 
-def value_at(point,obj):
+def value_at(point,obj):#Calculate values of a point with respect to an equation
 	ans=-obj.value
 	for i in range(len(obj.coefficients)):
 		ans+=obj.coefficients[i]*point[i]
 	return ans;
 
-def In_Surface(point,surface):
+def In_Surface(point,surface):#Checks if a point is on the same side of all boundries as the centre of the surface
 	cross_section_point=[]
 	if(surface.use_perspective2):
 		cross_section_point=point[1:]

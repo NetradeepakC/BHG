@@ -16,7 +16,7 @@ import custom_math as m2
 import math
 import random
 
-def make_triangle(centre):
+def make_triangle(centre):#places a randomly oriented traingle at the given point
 	Thita=random.random()*2*math.pi
 	point1=[centre[0]+40*math.sin(Thita), centre[1]+40*math.cos(Thita)]
 	point2=[centre[0]+40*math.sin(2*math.pi/3+Thita), centre[1]+40*math.cos(2*math.pi/3+Thita)]
@@ -30,8 +30,9 @@ def make_triangle(centre):
 render_time_step=1/float(input("Enter Monitor Refresh Rate: "))
 
 pygame.init()
+pygame.mixer.music.load("Collide.wav")
 infoObject = pygame.display.Info()
-pygame.display.set_caption("Test Environment")
+pygame.display.set_caption("Dodgeball by Phang")
 screen = pygame.display.set_mode((infoObject.current_w, int(infoObject.current_w/2)))
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 32)
@@ -64,7 +65,7 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 	
-	while(len(Radial_Object_List)<5+(render_prev_time//15) and (not player_hit)):
+	while(len(Radial_Object_List)<5+(render_prev_time//15) and (not player_hit)):#Spawning System
 		rand=random.random()
 		if(rand<0.25):
 			Radial_Object_List.append(RO.Radial_Object([width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
@@ -79,8 +80,7 @@ while running:
 			Radial_Object_List.append(RO.Radial_Object([3*width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
 			Surface_List.extend(make_triangle([width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
 	
-	if(not (physics_time_step==0 or player_hit)):
-		print(1/physics_time_step)
+	if(not (physics_time_step==0 or player_hit)):#Physics System
 		physics_prev_time=pygame.time.get_ticks()/1000
 		radial_object_counter=0
 		for i in Radial_Object_List:
@@ -102,10 +102,10 @@ while running:
 							values["1.2."+str(k)] = j.position[k]
 						for k in range(Physics_Model_List[0].dimensions):
 							values["1.3."+str(k)] = j.velocity[k]
-						temp = [Gravity_List[0][i](values) for i in range(len(Gravity_List[0]))]
+						temp = [Gravity_List[0][i](values) for i in range(len(Gravity_List[0]))]#Gravitation System
 						force = [force[i]+temp[i] for i in range(len(temp))]
 			else:
-				dist=m2.dist(pygame.mouse.get_pos(),i.position)
+				dist=m2.dist(pygame.mouse.get_pos(),i.position)#Player Control System
 				i.velocity[0]=1500*(pygame.mouse.get_pos()[0]-i.position[0])/dist
 				i.velocity[1]=1500*(pygame.mouse.get_pos()[1]-i.position[1])/dist
 				
@@ -113,11 +113,13 @@ while running:
 			
 			Physics_Model_List[0].Update_Kinematics(i, force=force, time_step=physics_time_step)
 		
-		Physics_Model_List[0].Surface_Collision(Radial_Object_List, Surface_List, time_step=physics_time_step)
-		player_hit=Physics_Model_List[0].Radial_Object_Collision(Radial_Object_List, time_step=physics_time_step)
+		Physics_Model_List[0].Surface_Collision(Radial_Object_List, Surface_List, time_step=physics_time_step)#Collision System with surface
+		player_hit,object_collision=Physics_Model_List[0].Radial_Object_Collision(Radial_Object_List, time_step=physics_time_step)#Collision system with other circles
+		if(object_collision):
+			pygame.mixer.music.play()
 	
 	render_time_delay=pygame.time.get_ticks()/1000-render_prev_time
-	if(render_time_delay>=render_time_step):
+	if(render_time_delay>=render_time_step):#Render system
 		render_prev_time+=render_time_delay
 		text = font.render("Score: "+str(physics_prev_time), True, (0,255,0))
 		screen.fill((0, 0, 0))
