@@ -68,16 +68,16 @@ while running:
 		rand=random.random()
 		if(rand<0.25):
 			Radial_Object_List.append(RO.Radial_Object([width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
-			Surface_List.extend(make_triangle([width/4-200+400*random.random(), height/4-100+200*random.random()]))
+			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
 		elif(rand<0.5):
 			Radial_Object_List.append(RO.Radial_Object([width/4-200+400*random.random(), 3*height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
-			Surface_List.extend(make_triangle([width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
+			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), height/4-100+200*random.random()]))
 		elif(rand<0.75):
 			Radial_Object_List.append(RO.Radial_Object([3*width/4-200+400*random.random(), 3*height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
-			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
+			Surface_List.extend(make_triangle([width/4-200+400*random.random(), height/4-100+200*random.random()]))
 		else:
 			Radial_Object_List.append(RO.Radial_Object([3*width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
-			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), height/4-100+200*random.random()]))
+			Surface_List.extend(make_triangle([width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
 	
 	if(not (physics_time_step==0 or player_hit)):
 		print(1/physics_time_step)

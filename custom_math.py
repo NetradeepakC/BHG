@@ -103,12 +103,18 @@ def In_Surface(point,surface):
 	cross_section_point=[]
 	if(surface.use_perspective2):
 		cross_section_point=point[1:]
+		for i in range(len(surface.boundry_list_perspective2)):
+			Point_Parity=value_at(cross_section_point,surface.boundry_list_perspective2[i])
+			if(Point_Parity<0 and surface.Centre_Parity[i]>0):
+				return False
+			if(Point_Parity>0 and surface.Centre_Parity[i]<0):
+				return False
 	else:
 		cross_section_point=point[:-1]
-	for i in range(len(surface.boundry_list)):
-		Point_Parity=value_at(cross_section_point,surface.boundry_list[i])
-		if(Point_Parity<0 and surface.Centre_Parity[i]>0):
-			return False
-		if(Point_Parity>0 and surface.Centre_Parity[i]<0):
-			return False
+		for i in range(len(surface.boundry_list_perspective1)):
+			Point_Parity=value_at(cross_section_point,surface.boundry_list_perspective1[i])
+			if(Point_Parity<0 and surface.Centre_Parity[i]>0):
+				return False
+			if(Point_Parity>0 and surface.Centre_Parity[i]<0):
+				return False
 	return True

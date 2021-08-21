@@ -52,6 +52,9 @@ class Surface:
 				centre[j]+=i[j]
 		for i in range(len(points[0])):
 			centre[i]/=len(points)
+		self.centre=centre
+		self.boundry_list_perspective1=boundry_list_perspective1
+		self.boundry_list_perspective2=boundry_list_perspective2
 		
 		self.Centre_Parity=[];
 		self.use_perspective2=True
@@ -63,8 +66,5 @@ class Surface:
 			self.Centre_Parity=[]
 			for i in boundry_list_perspective2:
 				self.Centre_Parity.append(m2.value_at(centre[1:],i))
-			self.boundry_list=boundry_list_perspective2
-		else:
-			self.boundry_list=boundry_list_perspective1
 		
 		self.material=material

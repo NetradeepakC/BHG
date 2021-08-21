@@ -96,6 +96,23 @@ class newtonian_physics_model:
 						Velocity_Along_Surface = [j.velocity[k] - Velocity_Along_Normal[k] for k in range(len(j.velocity))]
 						j.position = [j.position[k] - Velocity_Along_Normal[k] * time_step for k in range(len(j.velocity))]
 						j.velocity = [Velocity_Along_Surface[k] - self.Elasticity[i.material][j.material]*Velocity_Along_Normal[k] for k in range(len(j.velocity))]
+					else:
+						collide=False
+						for k in range(len(i.boundry_list_perspective1)):
+							dist = math.sqrt( m2.normal_from_surface(j.position[:-1],i.boundry_list_perspective1[k])**2 + m2.normal_from_surface(j.position[1:],i.boundry_list_perspective2[k])**2 )
+							if(dist<=j.radius):
+								collide=True
+								break
+						if(collide):
+							Normal_Along_Boundry=[j.position[k]-i.centre[k] for k in range(len(i.centre))]
+							Cos=m2.Cos(j.velocity,Normal_Along_Boundry)
+							Speed_Along_Normal = m2.Magnitude(j.velocity) * Cos
+							Magnitude_of_Normal = m2.Magnitude(Normal_Along_Boundry)
+							Unit_Vector_Along_Boundry_Normal = [k/Magnitude_of_Normal for k in Normal_Along_Boundry]
+							Velocity_Along_Normal = [Speed_Along_Normal * k for k in Unit_Vector_Along_Boundry_Normal]
+							Velocity_Along_Surface = [j.velocity[k] - Velocity_Along_Normal[k] for k in range(len(j.velocity))]
+							j.position = [j.position[k] - Velocity_Along_Normal[k] * time_step for k in range(len(j.velocity))]
+							j.velocity = [Velocity_Along_Surface[k] - self.Elasticity[i.material][j.material]*Velocity_Along_Normal[k] for k in range(len(j.velocity))]
 	
 	def Radial_Object_Collision(self, Radial_Object_List,time_step=1/60):
 		player_hit=False
