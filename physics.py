@@ -83,13 +83,13 @@ class newtonian_physics_model:
 			Unit_Vector_Along_Normal = [j / Magnitude_of_Coeff for j in i.coefficients]
 			for j in Radial_Object_List:
 				Magnitude_of_Normal=m2.normal_from_surface(j.position, i)
-				if (j.radius > Magnitude_of_Normal):
+				if (j.radius >= Magnitude_of_Normal):
 					Base_of_Normal=[]
 					if(m2.value_at(j.position,i)>0):
 						Base_of_Normal=[j.position[i]-Magnitude_of_Normal*Unit_Vector_Along_Normal[i] for i in range(len(Unit_Vector_Along_Normal))]
 					else:
 						Base_of_Normal=[j.position[i]+Magnitude_of_Normal*Unit_Vector_Along_Normal[i] for i in range(len(Unit_Vector_Along_Normal))]
-					if(m2.In_Surface(j.position,i)):
+					if(m2.In_Surface(Base_of_Normal,i)):
 						Cos = m2.Cos(j.velocity, i.coefficients)
 						Speed_Along_Normal = m2.Magnitude(j.velocity) * Cos
 						Velocity_Along_Normal = [Speed_Along_Normal * k for k in Unit_Vector_Along_Normal]

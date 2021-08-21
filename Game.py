@@ -13,7 +13,19 @@ import Radial_Object as RO
 import surface as SU
 import physics as phy
 import custom_math as m2
+import math
 import random
+
+def make_triangle(centre):
+	Thita=random.random()*2*math.pi
+	point1=[centre[0]+40*math.sin(Thita), centre[1]+40*math.cos(Thita)]
+	point2=[centre[0]+40*math.sin(2*math.pi/3+Thita), centre[1]+40*math.cos(2*math.pi/3+Thita)]
+	point3=[centre[0]+40*math.sin(4*math.pi/3+Thita), centre[1]+40*math.cos(4*math.pi/3+Thita)]
+	next_surface_list=[]
+	next_surface_list.append(SU.Surface([point1, point2], 2))
+	next_surface_list.append(SU.Surface([point2, point3], 2))
+	next_surface_list.append(SU.Surface([point3, point1], 2))
+	return next_surface_list
 
 render_time_step=1/float(input("Enter Monitor Refresh Rate: "))
 
@@ -52,16 +64,20 @@ while running:
 		if event.type == pygame.QUIT:
 			running = False
 	
-	while(len(Radial_Object_List)<5+(render_prev_time//15)):
+	while(len(Radial_Object_List)<5+(render_prev_time//15) and (not player_hit)):
 		rand=random.random()
 		if(rand<0.25):
 			Radial_Object_List.append(RO.Radial_Object([width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
+			Surface_List.extend(make_triangle([width/4-200+400*random.random(), height/4-100+200*random.random()]))
 		elif(rand<0.5):
 			Radial_Object_List.append(RO.Radial_Object([width/4-200+400*random.random(), 3*height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
+			Surface_List.extend(make_triangle([width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
 		elif(rand<0.75):
 			Radial_Object_List.append(RO.Radial_Object([3*width/4-200+400*random.random(), 3*height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
+			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), 3*height/4-100+200*random.random()]))
 		else:
 			Radial_Object_List.append(RO.Radial_Object([3*width/4-200+400*random.random(), height/4-100+200*random.random()], [100*random.random(), 100*random.random()], 15*22474266964325.848, 0, 15, False, [40+215*random.random(),40+215*random.random(),40+215*random.random()]))
+			Surface_List.extend(make_triangle([3*width/4-200+400*random.random(), height/4-100+200*random.random()]))
 	
 	if(not (physics_time_step==0 or player_hit)):
 		print(1/physics_time_step)
