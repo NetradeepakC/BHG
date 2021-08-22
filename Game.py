@@ -51,7 +51,7 @@ def main_menu(highscore,render_time_step):
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				running=False
-			if event.type == pygame.KEYDOWN and entering:
+			if event.type == pygame.KEYDOWN and entering:#Keyboard input system
 				if event.key == pygame.K_BACKSPACE and len(user_text)>0:
 					user_text = user_text[:-1]
 				elif(event.key==pygame.K_RETURN):
@@ -68,7 +68,7 @@ def main_menu(highscore,render_time_step):
 		mouse_posx,mouse_posy=pygame.mouse.get_pos()
 		LMB=pygame.mouse.get_pressed(num_buttons=3)[0]
 		
-		if(mouse_posx < width/2-20 and mouse_posx > 20 and mouse_posy < (height+text.get_height())/2 and mouse_posy > 60+text.get_height()):
+		if(mouse_posx < width/2-20 and mouse_posx > 20 and mouse_posy < (height+text.get_height())/2 and mouse_posy > 60+text.get_height()):#Play button
 			text = font.render("Play", True, (0,0,0))
 			pygame.draw.rect(screen, (255,0,0), pygame.Rect(20, 60+text.get_height(), width/2-40, (height-40-text.get_height())/2 -40 ))
 			if(LMB):
@@ -78,7 +78,7 @@ def main_menu(highscore,render_time_step):
 			pygame.draw.rect(screen, (255,0,0), pygame.Rect(20, 60+text.get_height(), width/2-40, (height-40-text.get_height())/2 -40 ),5)
 		screen.blit(text, (width/4-text.get_width()/2, (40+text.get_height()+(height+40+text.get_height())/2)/2))
 		
-		if(mouse_posx < width/2-20 and mouse_posx > 20 and mouse_posy < height-20 and mouse_posy > (height+40+text.get_height())/2 +20):
+		if(mouse_posx < width/2-20 and mouse_posx > 20 and mouse_posy < height-20 and mouse_posy > (height+40+text.get_height())/2 +20):#Frame Rate adjustment button
 			if(entering):
 				text = font.render("Enter Frame Rate: "+user_text, True, (0,0,0))
 			else:
@@ -95,7 +95,7 @@ def main_menu(highscore,render_time_step):
 			pygame.draw.rect(screen, (0,0,255), pygame.Rect(20, (height+40+text.get_height())/2 +20, width/2-40, (height-40-text.get_height())/2 -40),5)
 		screen.blit(text, (width/4-text.get_width()/2, (height+(height+40+text.get_height())/2)/2))
 		
-		if(mouse_posx > width/2+20 and mouse_posx < width-20 and mouse_posy < (height+text.get_height())/2 and mouse_posy > 60+text.get_height()):
+		if(mouse_posx > width/2+20 and mouse_posx < width-20 and mouse_posy < (height+text.get_height())/2 and mouse_posy > 60+text.get_height()):#Highscore Display
 			text = font.render("Highscore: "+str(highscore), True, (0,0,0))
 			pygame.draw.rect(screen, (0,255,0), pygame.Rect(width/2+20, 60+text.get_height(), width/2-40, (height-40-text.get_height())/2 -40))
 		else:
@@ -103,7 +103,7 @@ def main_menu(highscore,render_time_step):
 			pygame.draw.rect(screen, (0,255,0), pygame.Rect(width/2+20, 60+text.get_height(), width/2-40, (height-40-text.get_height())/2 -40),5)
 		screen.blit(text, (3*width/4-text.get_width()/2, (40+text.get_height()+(height+40+text.get_height())/2)/2))
 		
-		if(mouse_posx > width/2+20 and mouse_posx < width-20 and mouse_posy < height-20 and mouse_posy > (height+40+text.get_height())/2 +20):
+		if(mouse_posx > width/2+20 and mouse_posx < width-20 and mouse_posy < height-20 and mouse_posy > (height+40+text.get_height())/2 +20):#Quit Button
 			text = font.render("Quit", True, (0,0,0))
 			pygame.draw.rect(screen, (255,255,255), pygame.Rect(width/2+20, (height+40+text.get_height())/2 +20, width/2-40, (height-40-text.get_height())/2 -40))
 			if(LMB):
@@ -117,9 +117,9 @@ def main_menu(highscore,render_time_step):
 
 play,render_time_step=main_menu(highscore,render_time_step)
 while play:
-	Radial_Object_List = [RO.Radial_Object([width/2, 50*(width/1920)], [0, 0], 50*22474266964325.848, 0, 10*(width/1920), False, [0,255,0])]
+	Radial_Object_List = [RO.Radial_Object([width/2, 50*(width/1920)], [0, 0], 50*22474266964325.848, 0, 10*(width/1920), False, [0,255,0])]#PLayr Creation
 	Surface_List = []
-	Surface_List.append(SU.Surface([[0, 0], [width-1, 0]], 2))
+	Surface_List.append(SU.Surface([[0, 0], [width-1, 0]], 2))#Map initialisation
 	Surface_List.append(SU.Surface([[width/2-400*(width/1920), height/2], [width/2+400*(width/1920), height/2]], 2))
 	Surface_List.append(SU.Surface([[width/2-400*(width/1920), height/2-20*(width/1920)], [width/2-400*(width/1920), height/2+20*(width/1920)]], 2))
 	Surface_List.append(SU.Surface([[width/2+400*(width/1920), height/2-20*(width/1920)], [width/2+400*(width/1920), height/2+20*(width/1920)]], 2))
@@ -197,11 +197,11 @@ while play:
 		render_time_delay=pygame.time.get_ticks()/1000-render_prev_time
 		if(render_time_delay>=render_time_step):#Render system
 			render_prev_time+=render_time_delay
-			text = font.render("Score: "+str(math.floor(physics_prev_time-starting_time)), True, (0,255,0))
+			text = font.render("Score: "+str(math.floor(physics_prev_time-starting_time)), True, (0,255,0))#Score Display
 			screen.fill((0, 0, 0))
 			screen.blit(text, (20*(width/1920), 20*(width/1920)))
 			
-			if(player_hit):
+			if(player_hit):#Back to Main Menu button
 				mouse_posx,mouse_posy=pygame.mouse.get_pos()
 				LMB=pygame.mouse.get_pressed(num_buttons=3)[0]
 				text = font.render("Main Menu", True, (0,0,0))
@@ -215,12 +215,12 @@ while play:
 				screen.blit(text,(width/2-text.get_width()/2,40))
 			
 			pygame.draw.circle(screen, Radial_Object_List[0].color, Radial_Object_List[0].position, Radial_Object_List[0].radius, width=5*(width//1920))
-			for i in Radial_Object_List[1:]:
+			for i in Radial_Object_List[1:]:#Object Rendering
 				pygame.draw.circle(screen, i.color, i.position, i.radius)
-			for i in Surface_List:
+			for i in Surface_List:#Surface Rendering
 				pygame.draw.line(screen,(255,255,255),i.points[0],i.points[1],1)
 			pygame.display.update()
-	if(highscore<math.floor(physics_prev_time-starting_time)):
+	if(highscore<math.floor(physics_prev_time-starting_time)):#Save Data writing
 		highscore=math.floor(physics_prev_time-starting_time)
 		highscore_file = open("Data.txt","w")
 		highscore_file.write(str(highscore)+" \n")
