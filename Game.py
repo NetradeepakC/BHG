@@ -204,8 +204,8 @@ while play:
 			if(player_hit):
 				mouse_posx,mouse_posy=pygame.mouse.get_pos()
 				LMB=pygame.mouse.get_pressed(num_buttons=3)[0]
+				text = font.render("Main Menu", True, (0,0,0))
 				if(mouse_posx>width/2-text.get_width()/2-20 and mouse_posx<width/2+text.get_width()/2+20 and mouse_posy>20 and mouse_posy<60+text.get_height()):
-					text = font.render("Main Menu", True, (0,0,0))
 					pygame.draw.rect(screen, (255,0,255), pygame.Rect(width/2-text.get_width()/2-20, 20, text.get_width()+40, text.get_height()+40))
 					if(LMB):
 						running=False
